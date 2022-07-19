@@ -18,6 +18,8 @@ import os
 import subprocess
 import getpass
 import os.path
+from tkinter import ttk
+
 
 def teste_conexao():
     try:
@@ -35,7 +37,7 @@ else: #se verdadeira importa os modulos
 #janela principal
     jPri = Tk()
     jPri.title('Leitor de pontos')
-    jPri.geometry('1082x620+500+200')
+    jPri.geometry('1024x764+500+200')
     jPri['bg'] = "#d9d9d9"
     jPri.resizable(width=False, height=False)
     icone=PhotoImage(file='imgs/icon.png')
@@ -51,10 +53,9 @@ else: #se verdadeira importa os modulos
                 if header in line:  #testa se tem header nas linhas
                     break           #se header já estiver no arquivo ele da um break para não coloca-lá novamente
             else :
-                import ModuloGoogleDrive
-                import modulo_email
-                with open('Relatorio.wes' , 'a') as f :
+                with open('Relatorio.wes' , 'a') as f:
                     f.write(header + "\n")   #adciona um cabecalho(HEADER) no arquivo para ser lido e colocado no bd posteriormente
+                    f.close()
             while txtBoxC.get() != valorduplicado:
                 c = txtBoxC.get() #atribui o valor do input da caixa de texto a o c
                 if c == valorduplicado:
@@ -129,6 +130,8 @@ else: #se verdadeira importa os modulos
                         respReg.insert(1.0 ,f'A {tipo3} do cracha {c} foi registrado às {hora} no dia {data} \n')
                         jPri.after(700 , clear_label)
                     else:    #exibe erro, se não atender aos requisitos dos ifs
+                        dados.close()
+                        arq.close()
                         respStts["text"] = 'Erro!'
                         respHora['text'] = 'Erro!'
                         respData['text'] = 'Erro!'
@@ -139,8 +142,17 @@ else: #se verdadeira importa os modulos
                                                               'Almoço das 10:30 às 14:00\n'
                                                               'Jantar das 18:00 às 21:00\n'
                                                               'Ceia das 21:00 às 00:00\n')
+                        aberto = os.path.getsize('Relatorio.wes')  # atribui o tamanho do arquivo a variável
+                        if aberto == 20:  # testa se está vazio pelo getsize
+                            os.remove('Relatorio.wes')
+                            break  # se header já estiver no arquivo ele da um break para não coloca-lá novamente
                     break
         txtBoxC.delete(0 , END) #apaga o valor do crachá
+    def progresso() :
+        for x in range(10) :
+            progressBr['value'] += 10
+            jPri.update_idletasks()
+            time.sleep(0.1)
 #função para limpar os labels
     def clear_label():
         respStts['text'] = ''
@@ -168,7 +180,6 @@ else: #se verdadeira importa os modulos
                     tkinter.messagebox.showinfo('Erro!' , 'O arquivo relatorio.wes não existe!\n'
                                                          'Cadastre algum valor antes de gerar o relatorio.')
                 else:
-                    respStts ['text']='Relatório gerado'
 
                     user = getpass.getuser() #pega o nome do user do computador
                     now=str(datetime.now())[:19]
@@ -191,6 +202,9 @@ else: #se verdadeira importa os modulos
                     shutil.copy(pastaatual,destino2)
                     ModuloGoogleDrive.google() #invoca a função do modulo, enviando os arquivos para o google drive
                     modulo_email.email()    #invoca a função do modulo enviando os arquivos para o email
+                    progresso()
+                    respStts ['text']='Relatório gerado'
+                    tkinter.messagebox.showinfo('Sucesso!' , 'O relatório foi gerado com sucesso')
                     os.remove('Relatorio.wes') #apaga o arquivo
                     jPri.after(1000 , clear_label)
 
@@ -215,13 +229,13 @@ else: #se verdadeira importa os modulos
     lblCod['bg']='#d9dee8'
     lblCod['font']='Calibri 20'
     lblCod['fg']='red'
-    lblCod.place(x=40,y=45)
+    lblCod.place(x=30,y=45)
 
     lblCod2 = Label(framecorpo, text='Código do crachá:')
     lblCod2['bg']='#d9dee8'
     lblCod2['font']='Calibri 20'
     lblCod2['fg']='#0055be'
-    lblCod2.place(x=60,y=45)
+    lblCod2.place(x=50,y=45)
 
     #entry
 
@@ -231,20 +245,20 @@ else: #se verdadeira importa os modulos
     txtBoxC['fg']='#0055be'
     txtBoxC.bind('<Return>', msg)
     txtBoxC.focus_set()
-    txtBoxC.place(x=40,y=100, height=40)
+    txtBoxC.place(x=30,y=100, height=40)
     #==-label stts e entry==-=-=-=-=-=-=
 
     lblStts = Label(framecorpo, text='*')
     lblStts['bg']='#d9dee8'
     lblStts['font']='Calibri 20'
     lblStts['fg']='red'
-    lblStts.place(x=40,y=155)
+    lblStts.place(x=30,y=155)
 
     lblStts2 = Label(framecorpo, text='Status:')
     lblStts2['bg']='#d9dee8'
     lblStts2['font']='Calibri 20'
     lblStts2['fg']='#0055be'
-    lblStts2.place(x=60,y=155)
+    lblStts2.place(x=50,y=155)
 
     #entry
 
@@ -252,20 +266,20 @@ else: #se verdadeira importa os modulos
     respStts.config(highlightbackground='#0055be', highlightcolor='#0055be')
     respStts['font']='Calibri 20'
     respStts['fg']='#0055be'
-    respStts.place(x=40,y=210, height=40)
+    respStts.place(x=30,y=210, height=40)
 
     #===-=-=-=-=-=-=-=-labels horario e entry====-=-=-=-=-=-=-
     lblHr = Label(framecorpo, text='*')
     lblHr['bg']='#d9dee8'
     lblHr['font']='Calibri 20'
     lblHr['fg']='red'
-    lblHr.place(x=380,y=155)
+    lblHr.place(x=370,y=155)
 
     lblHr2 = Label(framecorpo, text='Horário:')
     lblHr2['bg']='#d9dee8'
     lblHr2['font']='Calibri 20'
     lblHr2['fg']='#0055be'
-    lblHr2.place(x=400,y=155)
+    lblHr2.place(x=390,y=155)
 
     #entry
 
@@ -273,26 +287,26 @@ else: #se verdadeira importa os modulos
     respHora.config(highlightbackground='#0055be', highlightcolor='#0055be')
     respHora['font']='Calibri 20'
     respHora['fg']='#0055be'
-    respHora.place(x=380,y=210, height=40)
+    respHora.place(x=370,y=210, height=40)
 
     #=-=-=-=-labels data e entry=-=-=-=-=-=-=-=-
     lblData = Label(framecorpo, text='*')
     lblData['bg']='#d9dee8'
     lblData['font']='Calibri 20'
     lblData['fg']='red'
-    lblData.place(x=695,y=155)
+    lblData.place(x=685,y=155)
 
     lblData2 = Label(framecorpo, text='Data:')
     lblData2['bg']='#d9dee8'
     lblData2['font']='Calibri 20'
     lblData2['fg']='#0055be'
-    lblData2.place(x=715,y=155)
+    lblData2.place(x=705,y=155)
 
     respData = Label(framecorpo, width=20, relief='flat', highlightthickness=2, bg='white', text='', anchor='w')
     respData.config(highlightbackground='#0055be', highlightcolor='#0055be')
     respData['font']='Calibri 20'
     respData['fg']='#0055be'
-    respData.place(x=715,y=210, height=40)
+    respData.place(x=705,y=210, height=40)
 
     #=-=-=-=-labels registro e entry=-=-=-=-=-=-=-=-
 
@@ -300,28 +314,32 @@ else: #se verdadeira importa os modulos
     lblReg['bg']='#d9dee8'
     lblReg['font']='Calibri 20'
     lblReg['fg']='red'
-    lblReg.place(x=40,y=265)
+    lblReg.place(x=30,y=265)
 
     lblReg2 = Label(framecorpo, text='Registros:')
     lblReg2['bg']='#d9dee8'
     lblReg2['font']='Calibri 20'
     lblReg2['fg']='#0055be'
-    lblReg2.place(x=60,y=265)
+    lblReg2.place(x=50,y=265)
 
     respReg = Text(framecorpo, width=65, height=6, relief='flat', highlightthickness=2, bg='white')
     respReg.config(highlightbackground='#0055be', highlightcolor='#0055be')
     respReg['font']='Calibri 14'
     respReg['fg']='#0055be'
-    respReg.place(x=40, y=320)
+    respReg.place(x=30, y=320)
     #-=-=-=-=-=-=-=botões=-=
     imgbtnGerar = PhotoImage(file='imgs/gerar.png')
     imgbtnSair = PhotoImage(file='imgs/sair.png')
 
+    progressBr = ttk.Progressbar(framecorpo , orient=HORIZONTAL , length=800)
+    progressBr.place(x=100, y=540, height=35)
+
     btnRel = Button(framecorpo, image=imgbtnGerar, borderwidth=0, bg='#d9dee8', activebackground='#d9dee8', command=relatoriobackup)
-    btnRel.place(x=720, y=320)
+    btnRel.place(x=710, y=320)
 
     btnSair = Button(framecorpo, image=imgbtnSair, borderwidth=0, bg='#d9dee8', activebackground='#d9dee8', command=jPri.destroy)
-    btnSair.place(x=720, y=395)
+    btnSair.place(x=710, y=395)
+
 
 
     jPri.mainloop()
