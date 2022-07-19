@@ -39,7 +39,7 @@ data = str(date.today())
 ~~~
 
 #### Hora.
-A hora semelhante a data também é pega pela biblioteca time em formato de string, formatada e atribuida a uma variavél.
+A hora é pega por meio da biblioteca time em formato de string, formatada e atribuida a uma variavél.
 
 ~~~python
 import time
@@ -150,7 +150,7 @@ else:    #exibe erro, se não atender aos requisitos dos ifs
 ## Relatórios.
 
 A segunda funcionalidade pega os arquivos txt gerados pelo programa, e gera um relatório com um command em um objeto button.
-Podemos separar a funcionalidade dessa função em _ etapas:
+Podemos separar a funcionalidade dessa função em 5 etapas:
 1. Cria a pasta de backup _se não existir_ e envia uma cópia do relatório para lá.
 2. Cria uma pasta na área de trabalho chamada ´Relatórios´ _se não existir_ e envia uma cópia do arquivo para lá.
 3. Envia o arquivo para a pasta do google drive com o modulo do google drive.
