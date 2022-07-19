@@ -206,6 +206,42 @@ def relatoriobackup():
                 os.remove('Relatorio.wes') #apaga o arquivo
                 jPri.after(1000 , clear_label)
 ~~~
+ 
+ ### Atualização 1.0
+##### Problema:
 
+o programa apresentava um bug, onde quando vc cadastrava um crachá fora do horario em que o programa permitia ele gerava o arquivo "Relatorio.wes" apenas com
+o cabeçalho *header*, para corrigir o bug primeiro fechei todos os arquivos Relatorio.wes que estavam abertos, no caso eram três:
 
-# em suma é isso, obrigado por ler sobre meu código, se possivel me siga e favorite meus commits <3
+1.
+~~~python
+with open('Relatorio.wes' , 'a') as dados:
+~~~
+2.
+~~~python
+arq = open('Relatorio.wes' , 'r')
+~~~
+3.
+~~~python
+with open('Relatorio.wes' , 'a') as f:
+~~~
+#### Solução:
+~~~python
+with open('Relatorio.wes' , 'a') as f:
+    f.write(header + "\n")  
+    f.close()
+    
+else:    #exibe erro, se não atender aos requisitos dos ifs
+    dados.close()
+    arq.close()
+~~~
+logo após no caso else o script pega o tamnho do arquivo com o comando ´os.path.getsize("Relatorio.wes")´ que está apenas com o header dentro e testa:
+
+~~~python
+aberto = os.path.getsize('Relatorio.wes')  # atribui o tamanho do arquivo a variável
+if aberto == 20:  # testa se está vazio pelo getsize
+    os.remove('Relatorio.wes')
+~~~
+Assim apagando o arquivo depois de o cria-ló
+
+##obrigado por ler sobre meu código, se possivel me siga e favorite meus commits <3
