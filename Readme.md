@@ -2,8 +2,8 @@
 ## Feito para ler pontos de almoço de crachás com leitor rfid e gerar relatórios.
 
 O código feito tem como objetivo:
-* ler o crachá sem a necessidade de um operador apertar a tecla enter.
-* gerar um relatório com as seguintes informações.
+* Ler o crachá sem a necessidade de um operador apertar a tecla enter.
+* Gerar um relatório com as seguintes informações.
     1. Código do crachá _número do crachá_.
     2. Qunatidade de refeições _no caso do almoço jantar e ceia sempre será 1_ servem para contabilizar no powerBY.
     3. Tipo:
@@ -64,7 +64,7 @@ ceia2 = datetime.strptime('23:59:59.000000', '%H:%M:%S.%f')
 
 As variaveis recebem o valor do começo e do fim de cada intervalo.
 
-## testes de ifs
+## Testes de ifs.
 
 Para testar as variaveis eu atribui o valor boleano a outra variavel e depois testei ela com o if da seguinte forma:
 
@@ -157,7 +157,7 @@ Podemos separar a funcionalidade dessa função em 5 etapas:
 4. Envia o arquivo por email com o modulo email.
 5. Apaga o arquivo que ficou na pasta inícial.
 
-#### código:
+#### Código:
 
 ~~~python
 def relatoriobackup():
@@ -210,7 +210,7 @@ def relatoriobackup():
  ### Atualização 1.0
 ##### Problema:
 
-o programa apresentava um bug, onde quando vc cadastrava um crachá fora do horario em que o programa permitia ele gerava o arquivo "Relatorio.wes" apenas com
+O programa apresentava um bug, onde quando vc cadastrava um crachá fora do horario em que o programa permitia ele gerava o arquivo "Relatorio.wes" apenas com
 o cabeçalho *header*, para corrigir o bug primeiro fechei todos os arquivos Relatorio.wes que estavam abertos, no caso eram três:
 
 1.
